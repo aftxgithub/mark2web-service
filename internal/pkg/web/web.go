@@ -6,12 +6,15 @@ import (
 	"time"
 )
 
-func Start() error {
+func Start() int {
 	runAddr := net.JoinHostPort("", getPort())
 	srv := &http.Server{
 		Addr:         runAddr,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
-	return srv.ListenAndServe()
+	if err := srv.ListenAndServe(); err != nil {
+		return 1
+	}
+	return 0
 }
