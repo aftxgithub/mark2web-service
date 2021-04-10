@@ -7,9 +7,8 @@ import (
 )
 
 func Start() int {
-	runAddr := net.JoinHostPort("", getPort())
 	srv := &http.Server{
-		Addr:         runAddr,
+		Addr:         getRunAddr(),
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 	}
@@ -17,4 +16,8 @@ func Start() int {
 		return 1
 	}
 	return 0
+}
+
+func getRunAddr() string {
+	return net.JoinHostPort("", getPort())
 }
