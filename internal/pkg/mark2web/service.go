@@ -1,6 +1,12 @@
 package mark2web
 
-// MdToHTML returns the HTML equivalent of the passed in markdown
-func MdToHTML(markdown []byte) []byte {
-	return nil
+import (
+	"bytes"
+
+	"github.com/gomarkdown/markdown"
+)
+
+// MarkdownToHTML returns the HTML equivalent of the passed in markdown
+func MarkdownToHTML(md []byte) []byte {
+	return bytes.TrimSpace(markdown.ToHTML(md, nil, nil))
 }
