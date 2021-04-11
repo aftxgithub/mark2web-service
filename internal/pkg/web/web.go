@@ -15,7 +15,9 @@ func Start() int {
 		httpServer(),
 	}
 	srv.setupRoutes()
+	srv.logger.Infof("Serving on %s", srv.Addr)
 	if err := srv.ListenAndServe(); err != nil {
+		srv.logger.Errorf("could not start server: %v", err)
 		return 1
 	}
 	return 0
