@@ -14,6 +14,7 @@ func Start() int {
 		logger(),
 		httpServer(),
 	}
+	srv.setupRoutes()
 	if err := srv.ListenAndServe(); err != nil {
 		return 1
 	}

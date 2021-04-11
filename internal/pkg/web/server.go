@@ -11,3 +11,7 @@ type m2wserver struct {
 	log *log.Logger
 	*http.Server
 }
+
+// setupRoutes registers server handlers
+func (s *m2wserver) setupRoutes() {
+}
