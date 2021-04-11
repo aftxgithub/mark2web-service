@@ -19,5 +19,5 @@ func Start() int {
 }
 
 func getRunAddr() string {
-	return net.JoinHostPort("", getPort())
+	return net.JoinHostPort("", getPortFromEnv())
 }

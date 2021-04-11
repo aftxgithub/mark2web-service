@@ -8,9 +8,9 @@ const (
 	M2W_PORT = "M2W_PORT"
 )
 
-// getPort returns the M2W_PORT environment variable.
+// getPortFromEnv returns the M2W_PORT environment variable.
 // For compatibility with some platforms (e.g. Heroku), it falls back to PORT if M2W_PORT is empty.
-func getPort() string {
+func getPortFromEnv() string {
 	port, ok := os.LookupEnv(M2W_PORT)
 	if !ok {
 		port = os.Getenv("PORT")

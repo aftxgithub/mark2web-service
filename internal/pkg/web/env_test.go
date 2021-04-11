@@ -17,7 +17,7 @@ func TestM2WPort(t *testing.T) {
 	undo := setenv(M2W_PORT, testPort)
 	defer undo()
 
-	got := getPort()
+	got := getPortFromEnv()
 	if got != testPort {
 		t.Fatalf("Expected port '%s', got '%s'", testPort, got)
 	}
@@ -28,7 +28,7 @@ func TestFallbackPort(t *testing.T) {
 	undo := setenv("PORT", testPort)
 	defer undo()
 
-	got := getPort()
+	got := getPortFromEnv()
 	if got != testPort {
 		t.Fatalf("Expected port '%s', got '%s'", testPort, got)
 	}
