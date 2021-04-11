@@ -1,9 +1,10 @@
 package web
 
 import (
+	"bytes"
+	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 )
 
@@ -25,6 +26,7 @@ func (s *m2wserver) handleMarkdownUpload(w http.ResponseWriter, r *http.Request)
 	}
 
 	r.ParseMultipartForm(1 << 10)
+	var buf bytes.Buffer
 	file, _, err := r.FormFile("file")
 	if err != nil {
 		s.logger.Error(err)
@@ -32,5 +34,9 @@ func (s *m2wserver) handleMarkdownUpload(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	defer file.Close()
-	io.Copy(os.Stdout, file)
+	io.Copy(&buf, file)
+
+	url := s.service.MarkdownToURL(buf.Bytes(), r.Host)
+	s.logger.Tracef("url for markdown is %s", url)
+	fmt.Fprintln(w, url)
 }

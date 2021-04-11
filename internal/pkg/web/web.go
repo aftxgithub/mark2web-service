@@ -7,20 +7,28 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	m2wlog "github.com/thealamu/mark2web-service/internal/pkg/log"
+	"github.com/thealamu/mark2web-service/internal/pkg/mark2web"
 )
 
 func Start() int {
 	srv := &m2wserver{
+		service(),
 		logger(),
 		httpServer(),
 	}
 	srv.setupRoutes()
+
 	srv.logger.Infof("Serving on %s", srv.Addr)
 	if err := srv.ListenAndServe(); err != nil {
 		srv.logger.Errorf("could not start server: %v", err)
 		return 1
 	}
+
 	return 0
+}
+
+func service() *mark2web.Service {
+	return &mark2web.Service{}
 }
 
 // logger returns a suitable logger for use in handlers
