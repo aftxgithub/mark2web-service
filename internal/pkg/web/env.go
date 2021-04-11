@@ -6,6 +6,9 @@ import "os"
 const (
 	// M2W_PORT variable determines the port to start the server on
 	M2W_PORT = "M2W_PORT"
+
+	// M2W_LOG_LEVEL variable determines the log level across the service
+	M2W_LOG_LEVEL = "M2W_LOG_LEVEL"
 )
 
 // getPortFromEnv returns the M2W_PORT environment variable.
@@ -16,4 +19,9 @@ func getPortFromEnv() string {
 		port = os.Getenv("PORT")
 	}
 	return port
+}
+
+// getLogLevelFromEnv returns the M2W_LOG_LEVEL environment variable.
+func getLogLevelFromEnv() string {
+	return os.Getenv(M2W_LOG_LEVEL)
 }
