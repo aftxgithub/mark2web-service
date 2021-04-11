@@ -2,6 +2,8 @@ package mark2web
 
 import (
 	"bytes"
+	"crypto/sha1"
+	"fmt"
 
 	"github.com/gomarkdown/markdown"
 )
@@ -13,7 +15,14 @@ type Service struct{}
 // It orchestrates converting markdown to HTML,
 // generating the URL using the host and storing a mapping from the URL to the HTML.
 func (m *Service) MarkdownToURL(md []byte, host string) string {
-	return ""
+	HTMLEquiv := markdownToHTML(md)
+	path := shasumOf(HTMLEquiv)
+	return fmt.Sprintf("%s/%s", host, path)
+}
+
+// shasumOf returns the sha1sum of data
+func shasumOf(data []byte) string {
+	return fmt.Sprintf("%x", sha1.Sum(data))
 }
 
 // markdownToHTML returns the HTML equivalent of the passed in markdown
