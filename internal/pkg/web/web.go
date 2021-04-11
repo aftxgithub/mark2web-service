@@ -18,6 +18,12 @@ func Start() int {
 	return 0
 }
 
+// getRunAddr returns the address to start the server on.
+// If no port in environment, it defaults to 8080.
 func getRunAddr() string {
-	return net.JoinHostPort("", getPortFromEnv())
+	port := getPortFromEnv()
+	if port == "" {
+		port = "8080"
+	}
+	return net.JoinHostPort("", port)
 }
