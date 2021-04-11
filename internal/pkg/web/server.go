@@ -4,11 +4,13 @@ import (
 	"net/http"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/thealamu/mark2web-service/internal/pkg/mark2web"
 )
 
-// m2wserver is a http server, holding our run dependencies.
+// m2ws erver is a http server, holding our run dependencies.
 type m2wserver struct {
-	logger *log.Logger
+	service *mark2web.Service
+	logger  *log.Logger
 	*http.Server
 }
 
