@@ -17,7 +17,7 @@ func TestMarkdownToHTML(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	gotHTML := MarkdownToHTML(testMarkdown)
+	gotHTML := markdownToHTML(testMarkdown)
 	if !bytes.Equal(testHTML, gotHTML) {
 		t.Fatalf("Rendered HTML does not match expected")
 	}

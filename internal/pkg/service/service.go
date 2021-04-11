@@ -15,7 +15,7 @@ type M2WService struct{}
 func (m *M2WService) URLFor(markdown []byte) string {
 }
 
-// MarkdownToHTML returns the HTML equivalent of the passed in markdown
-func MarkdownToHTML(md []byte) []byte {
+// markdownToHTML returns the HTML equivalent of the passed in markdown
+func markdownToHTML(md []byte) []byte {
 	return bytes.TrimSpace(markdown.ToHTML(md, nil, nil))
 }
