@@ -3,6 +3,7 @@ package web
 import (
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -66,11 +67,14 @@ func getRunAddr() string {
 // For example, for the URL https://example.com/12345, it returns 12345.
 // For a URL with no path, it returns an empty string.
 func getLastPath(URL string) string {
-	// splits := strings.Split(URL, "/")
-	// return splits[len(splits)-1]
-	i := strings.LastIndex(URL, "/")
+	urlObj, err := url.Parse(URL)
+	if err != nil {
+		return ""
+	}
+	path := urlObj.Path
+	i := strings.LastIndex(path, "/")
 	if i == -1 {
 		return ""
 	}
-	return URL[i+1:]
+	return path[i+1:]
 }
