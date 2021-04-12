@@ -21,7 +21,13 @@ func (s *m2wserver) handleURLresolution(w http.ResponseWriter, r *http.Request) 
 	s.logger.Tracef("handling url resolution for %+v", r)
 
 	id := getLastPath(r.URL.String())
-	s.logger.Debugf("url id is %s", id)
+	s.logger.Debugf("url id is '%s'", id)
+	// Todo(thealamu): Naive. Validate 'id' is a sha1
+	if id == "" {
+		s.logger.Error(fmt.Errorf("empty id is invalid"))
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	HTMLbytes, err := s.service.HTMLFor(id)
 	if err != nil {
 		s.logger.Error(err)
