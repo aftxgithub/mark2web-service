@@ -1,7 +1,10 @@
 package db
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 func TestFSDBImplementation(t *testing.T) {
-	testDBImplementation(t, new(FSDatabase))
+	testDBImplementation(t, &FSDatabase{os.TempDir()})
 }
