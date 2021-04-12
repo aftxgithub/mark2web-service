@@ -6,10 +6,13 @@ import (
 	"fmt"
 
 	"github.com/gomarkdown/markdown"
+	"github.com/thealamu/mark2web-service/internal/pkg/db"
 )
 
 // Service implements core logic for converting markdown to URL
-type Service struct{}
+type Service struct {
+	DB db.DB
+}
 
 // MarkdownToURL generates a URL for the markdown,
 // creates a mapping of the URL to the markdown and returns the URL

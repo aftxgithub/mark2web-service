@@ -3,9 +3,11 @@ package web
 import (
 	"net"
 	"net/http"
+	"os"
 	"time"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/thealamu/mark2web-service/internal/pkg/db"
 	m2wlog "github.com/thealamu/mark2web-service/internal/pkg/log"
 	"github.com/thealamu/mark2web-service/internal/pkg/mark2web"
 )
@@ -28,7 +30,11 @@ func Start() int {
 }
 
 func service() *mark2web.Service {
-	return &mark2web.Service{}
+	return &mark2web.Service{
+		DB: &db.FSDatabase{
+			BaseDir: os.TempDir(),
+		},
+	}
 }
 
 // logger returns a suitable logger for use in handlers
