@@ -28,7 +28,7 @@ func (s *m2wserver) handleURLresolution(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	fmt.Fprintln(w, string(HTMLbytes))
+	fmt.Fprint(w, string(HTMLbytes))
 }
 
 // handleMarkdownUpload receives a markdown file and returns a URL to it as static HTML
@@ -61,5 +61,6 @@ func (s *m2wserver) handleMarkdownUpload(w http.ResponseWriter, r *http.Request)
 	}
 
 	s.logger.Tracef("url for markdown is %s", url)
-	fmt.Fprintln(w, url)
+	w.WriteHeader(http.StatusCreated)
+	fmt.Fprint(w, url)
 }
