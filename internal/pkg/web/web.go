@@ -4,6 +4,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -59,4 +60,17 @@ func getRunAddr() string {
 		port = "8080"
 	}
 	return net.JoinHostPort("", port)
+}
+
+// getLastPath returns the last path item in a URL.
+// For example, for the URL https://example.com/12345, it returns 12345.
+// For a URL with no path, it returns an empty string.
+func getLastPath(URL string) string {
+	// splits := strings.Split(URL, "/")
+	// return splits[len(splits)-1]
+	i := strings.LastIndex(URL, "/")
+	if i == -1 {
+		return ""
+	}
+	return URL[i+1:]
 }
