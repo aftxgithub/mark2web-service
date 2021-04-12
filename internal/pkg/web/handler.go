@@ -20,7 +20,7 @@ func (s *m2wserver) handleRoot(w http.ResponseWriter, r *http.Request) {
 func (s *m2wserver) handleURLresolution(w http.ResponseWriter, r *http.Request) {
 	s.logger.Tracef("handling url resolution for %+v", r)
 
-	id := r.URL.Path
+	id := getLastPath(r.URL.String())
 	s.logger.Debugf("url id is %s", id)
 	HTMLbytes, err := s.service.HTMLFor(id)
 	if err != nil {
