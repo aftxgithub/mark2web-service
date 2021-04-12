@@ -22,7 +22,7 @@ func (s *m2wserver) handleURLresolution(w http.ResponseWriter, r *http.Request) 
 
 	id := getLastPath(r.URL.String())
 	s.logger.Debugf("url id is '%s'", id)
-	// Todo(thealamu): Naive. Validate 'id' is a sha1
+	// TODO(thealamu): Naive. Validate 'id' is a sha1
 	if id == "" {
 		s.logger.Error(fmt.Errorf("empty id is invalid"))
 		w.WriteHeader(http.StatusBadRequest)
@@ -34,6 +34,7 @@ func (s *m2wserver) handleURLresolution(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	w.Header().Set("Content-Type", "text/html")
 	fmt.Fprint(w, string(HTMLbytes))
 }
 
