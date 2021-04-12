@@ -26,7 +26,11 @@ const (
 
 func New(level string) *log.Logger {
 	return &log.Logger{
-		Out:   os.Stderr,
+		Out: os.Stderr,
+		Formatter: &log.TextFormatter{
+			DisableColors: true,
+			FullTimestamp: true,
+		},
 		Level: levelOf(level),
 	}
 }

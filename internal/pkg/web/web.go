@@ -39,12 +39,7 @@ func service() *mark2web.Service {
 
 // logger returns a suitable logger for use in handlers
 func logger() *log.Logger {
-	l := m2wlog.New(getLogLevelFromEnv())
-	l.SetFormatter(&log.TextFormatter{
-		DisableColors: true,
-		FullTimestamp: true,
-	})
-	return l
+	return m2wlog.New(getLogLevelFromEnv())
 }
 
 // httpServer returns a simple, configured http server
