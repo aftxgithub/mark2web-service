@@ -8,15 +8,21 @@ import (
 	"strings"
 )
 
+func (s *m2wserver) handleRoot(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		s.handleMarkdownUpload(w, r)
+		return
+	}
+	s.handleURLresolution(w, r)
+}
+
+// handleURLresolution resolves a URL, returning the corresponding HTML
+func (s *m2wserver) handleURLresolution(w http.ResponseWriter, r *http.Request) {
+}
+
 // handleMarkdownUpload receives a markdown file and returns a URL to it as static HTML
 func (s *m2wserver) handleMarkdownUpload(w http.ResponseWriter, r *http.Request) {
 	s.logger.Tracef("handling markdown upload for %+v", r)
-
-	if r.Method != http.MethodPost {
-		s.logger.Debug("method not allowed. This is a POST endpoint")
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
 
 	ct := r.Header.Get("Content-Type")
 	if !strings.HasPrefix(ct, "multipart/form-data") {

@@ -17,6 +17,6 @@ type m2wserver struct {
 // setupRoutes registers server handlers
 func (s *m2wserver) setupRoutes() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", s.handleMarkdownUpload)
+	mux.HandleFunc("/", s.handleRoot)
 	s.Handler = mux
 }
