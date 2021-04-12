@@ -16,10 +16,15 @@ type Service struct {
 
 // MarkdownToURL generates a URL for the markdown,
 // creates a mapping of the URL to the markdown and returns the URL
-func (*Service) MarkdownToURL(md []byte, host string) string {
+func (s *Service) MarkdownToURL(md []byte, host string) (string, error) {
 	HTMLEquiv := markdownToHTML(md)
 	path := shasumOf(HTMLEquiv)
-	return fmt.Sprintf("%s/%s", host, path)
+	// Create mapping
+	err := s.DB.Save(path, HTMLEquiv)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%s/%s", host, path), nil
 }
 
 // shasumOf returns the sha1sum of data
