@@ -18,6 +18,17 @@ func (s *m2wserver) handleRoot(w http.ResponseWriter, r *http.Request) {
 
 // handleURLresolution resolves a URL, returning the corresponding HTML
 func (s *m2wserver) handleURLresolution(w http.ResponseWriter, r *http.Request) {
+	s.logger.Tracef("handling url resolution for %+v", r)
+
+	id := r.URL.Path
+	s.logger.Debugf("url id is %s", id)
+	HTMLbytes, err := s.service.HTMLFor(id)
+	if err != nil {
+		s.logger.Error(err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	fmt.Fprintln(w, HTMLbytes)
 }
 
 // handleMarkdownUpload receives a markdown file and returns a URL to it as static HTML
