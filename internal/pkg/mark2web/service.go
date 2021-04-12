@@ -11,10 +11,9 @@ import (
 // Service implements core logic for converting markdown to URL
 type Service struct{}
 
-// MarkdownToURL returns a URL for the given markdown.
-// It orchestrates converting markdown to HTML,
-// generating the URL using the host and storing a mapping from the URL to the HTML.
-func (m *Service) MarkdownToURL(md []byte, host string) string {
+// MarkdownToURL generates a URL for the markdown,
+// creates a mapping of the URL to the markdown and returns the URL
+func (*Service) MarkdownToURL(md []byte, host string) string {
 	HTMLEquiv := markdownToHTML(md)
 	path := shasumOf(HTMLEquiv)
 	return fmt.Sprintf("%s/%s", host, path)
