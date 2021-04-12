@@ -6,13 +6,19 @@ import (
 )
 
 func testDBImplementation(t *testing.T, dbImpl DB) {
-	testURL := "http://mark2web.test/3598350bd2279289b076e3faecec71eadad4d17e"
+	testID := "3598350bd2279289b076e3faecec71eadad4d17e"
 	testHTML := []byte("<h1>Hello World</h1>")
 
-	dbImpl.Save(testURL, testHTML)
+	err := dbImpl.Save(testID, testHTML)
+	if err != nil {
+		t.Error(err)
+	}
 
-	gotHTML := dbImpl.GetHTMLFor(testURL)
+	gotHTML, err := dbImpl.GetHTMLFor(testID)
+	if err != nil {
+		t.Error(err)
+	}
 	if !bytes.Equal(testHTML, gotHTML) {
-		t.Errorf("expected retrieved content to be %s, got %s", testHTML, gotHTML)
+		t.Errorf("expected retrieved content to be '%s', got '%s'", testHTML, gotHTML)
 	}
 }
