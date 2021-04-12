@@ -14,6 +14,11 @@ type Service struct {
 	DB db.DB
 }
 
+// HTMLFor returns the corresponding HTML for the ID
+func (s *Service) HTMLFor(ID string) ([]byte, error) {
+	return s.DB.GetHTMLFor(ID)
+}
+
 // MarkdownToURL generates a URL for the markdown,
 // creates a mapping of the URL to the markdown and returns the URL
 func (s *Service) MarkdownToURL(md []byte, host string) (string, error) {
