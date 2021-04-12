@@ -36,7 +36,13 @@ func (s *m2wserver) handleMarkdownUpload(w http.ResponseWriter, r *http.Request)
 	defer file.Close()
 	io.Copy(&buf, file)
 
-	url := s.service.MarkdownToURL(buf.Bytes(), r.Host)
+	url, err := s.service.MarkdownToURL(buf.Bytes(), r.Host)
+	if err != nil {
+		s.logger.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	s.logger.Tracef("url for markdown is %s", url)
 	fmt.Fprintln(w, url)
 }
