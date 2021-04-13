@@ -36,7 +36,7 @@ func service(s *server) error {
 
 	database := func(srvc *mark2web.Service) error {
 		srvc.DB = &db.FSDatabase{
-			BaseDir: "./static",
+			BaseDir: ".",
 		}
 		return nil
 	}
