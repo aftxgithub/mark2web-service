@@ -22,12 +22,18 @@ func newServer(addr string, opts ...func(*server) error) (*server, error) {
 		Addr:    addr,
 		Handler: getRoutes(&s),
 	}
-	service, err := mark2web.NewService()
+	// init a service
+	serviceLogger := func(srvc *mark2web.Service) error {
+		srvc.Logger = s.logger
+		return nil
+	}
+	service, err := mark2web.NewService(serviceLogger)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not create server")
 	}
 	s.service = service
 
+	// load config opts
 	for _, opt := range opts {
 		err := opt(&s)
 		if err != nil {

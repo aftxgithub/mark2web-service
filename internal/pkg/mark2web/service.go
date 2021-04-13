@@ -8,12 +8,14 @@ import (
 
 	"github.com/gomarkdown/markdown"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"github.com/thealamu/mark2web-service/internal/pkg/db"
 )
 
 // Service implements core logic for converting markdown to URL
 type Service struct {
-	DB db.DB
+	Logger *log.Logger
+	DB     db.DB
 }
 
 func NewService(opts ...func(*Service) error) (*Service, error) {
