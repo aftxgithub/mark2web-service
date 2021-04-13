@@ -34,12 +34,7 @@ func service(s *server) error {
 		return nil
 	}
 
-	database := func(srvc *mark2web.Service) error {
-		srvc.DB = &db.FSDatabase{
-			BaseDir: ".",
-		}
-		return nil
-	}
+	var database func(srvc *mark2web.Service) error
 	if hasEnv("GOOGLE_APPLICATION_CREDENTIALS") {
 		// Use firebase
 		database = func(srvc *mark2web.Service) error {
@@ -48,6 +43,13 @@ func service(s *server) error {
 				return err
 			}
 			srvc.DB = firebaseDB
+			return nil
+		}
+	} else {
+		database = func(srvc *mark2web.Service) error {
+			srvc.DB = &db.FSDatabase{
+				BaseDir: ".",
+			}
 			return nil
 		}
 	}
