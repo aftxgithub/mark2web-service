@@ -36,6 +36,8 @@ func NewFirebaseDB(l *log.Logger) (*FirebaseDB, error) {
 }
 
 func (f *FirebaseDB) Save(ID string, HTML []byte) error {
+	f.logger.Tracef("Saving %s at id '%s'", HTML, ID)
+
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*50)
 	defer cancel()
 

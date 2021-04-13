@@ -32,7 +32,7 @@ func Start() int {
 
 func service(l *log.Logger) *mark2web.Service {
 	var dbImpl db.DB
-	dbImpl, err := db.NewFirebaseDB()
+	dbImpl, err := db.NewFirebaseDB(l)
 	if err != nil {
 		l.Error(err)
 		dbImpl = &db.FSDatabase{
