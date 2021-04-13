@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/thealamu/mark2web-service/internal/pkg/db"
 	"github.com/thealamu/mark2web-service/internal/pkg/mark2web"
 )
 
@@ -23,13 +24,35 @@ func Start() int {
 }
 
 func service(s *server) error {
-	srvc, err := mark2web.NewService(func(srvc *mark2web.Service) error {
+	logger := func(srvc *mark2web.Service) error {
+		// use the server's logger in service
 		srvc.Logger = s.logger
 		return nil
-	})
+	}
+
+	database := func(srvc *mark2web.Service) error {
+		srvc.DB = &db.FSDatabase{
+			BaseDir: "./static",
+		}
+		return nil
+	}
+	if hasEnv("GOOGLE_APPLICATION_CREDENTIALS") {
+		// Use firebase
+		database = func(srvc *mark2web.Service) error {
+			firebaseDB, err := db.NewFirebaseDB(srvc.Logger)
+			if err != nil {
+				return err
+			}
+			srvc.DB = firebaseDB
+			return nil
+		}
+	}
+
+	srvc, err := mark2web.NewService(logger, database)
 	if err != nil {
 		return err
 	}
+
 	s.service = srvc
 	return nil
 }

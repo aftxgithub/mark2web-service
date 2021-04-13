@@ -26,7 +26,7 @@ func getLogLevelFromEnv() string {
 	return os.Getenv(M2W_LOG_LEVEL)
 }
 
-// hasEnv returns true if there exists an environment variable 'key"
+// hasEnv returns true if there exists an environment variable 'key'
 func hasEnv(key string) bool {
 	return os.Getenv(key) != ""
 }
