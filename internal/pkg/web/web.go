@@ -17,9 +17,13 @@ func Start() int {
 		log.Error(err)
 		return 1
 	}
+	log.Infof("starting server on %s\n", srv.Addr)
+	// TODO(thealamu): Implement graceful shutdown on interrupt
 	if err := srv.ListenAndServe(); err != nil {
+		log.Error(err)
 		return 1
 	}
+	log.Traceln("server stopped")
 	return 0
 }
 

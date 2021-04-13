@@ -9,6 +9,7 @@ import (
 )
 
 func (s *server) handleRoot(w http.ResponseWriter, r *http.Request) {
+	s.logger.Tracef("handling root path request for method %s\n", r.Method)
 	if r.Method == http.MethodPost {
 		s.handleMarkdownUpload(w, r)
 		return

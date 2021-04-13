@@ -18,6 +18,8 @@ type FirebaseDB struct {
 }
 
 func NewFirebaseDB(l *log.Logger) (*FirebaseDB, error) {
+	log.Traceln("building new firebase db")
+
 	config := &firebase.Config{
 		StorageBucket: "mark2web.appspot.com",
 	}

@@ -19,6 +19,7 @@ type Service struct {
 }
 
 func NewService(opts ...func(*Service) error) (*Service, error) {
+	log.Traceln("creating a new service")
 	s := Service{}
 	// set sensible defaults
 	s.Logger = log.New()
@@ -37,6 +38,7 @@ func NewService(opts ...func(*Service) error) (*Service, error) {
 
 // HTMLFor returns the corresponding HTML for the ID
 func (s *Service) HTMLFor(ID string) ([]byte, error) {
+	s.Logger.Tracef("in service, retrieving HTML for %s\n", ID)
 	return s.DB.GetHTMLFor(ID)
 }
 

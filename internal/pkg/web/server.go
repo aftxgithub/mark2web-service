@@ -15,6 +15,7 @@ type server struct {
 }
 
 func newServer(addr string, opts ...func(*server) error) (*server, error) {
+	log.Tracef("creating a new server for addr %s\n", addr)
 	s := server{}
 	// set sensible server defaults
 	s.logger = log.New()
@@ -42,6 +43,7 @@ func newServer(addr string, opts ...func(*server) error) (*server, error) {
 
 // getRoutes registers server handlers
 func getRoutes(s *server) http.Handler {
+	log.Traceln("registering server routes")
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", s.handleRoot)
 	return mux
