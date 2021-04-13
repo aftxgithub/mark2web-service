@@ -19,7 +19,8 @@ func newServer(addr string, opts ...func(*server) error) (*server, error) {
 	// set sensible server defaults
 	s.logger = log.New()
 	s.Server = &http.Server{
-		Addr: addr,
+		Addr:    addr,
+		Handler: getRoutes(&s),
 	}
 
 	for _, opt := range opts {
@@ -32,9 +33,9 @@ func newServer(addr string, opts ...func(*server) error) (*server, error) {
 	return &s, nil
 }
 
-// setupRoutes registers server handlers
-// func (s *m2wserver) setupRoutes() {
-// 	mux := http.NewServeMux()
-// 	mux.HandleFunc("/", s.handleRoot)
-// 	s.Handler = mux
-// }
+// getRoutes registers server handlers
+func getRoutes(s *server) http.Handler {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", s.handleRoot)
+	return mux
+}

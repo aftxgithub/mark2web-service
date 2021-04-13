@@ -15,6 +15,9 @@ func Start() int {
 		log.Error(err)
 		return 1
 	}
+	if err := srv.ListenAndServe(); err != nil {
+		return 1
+	}
 	return 0
 }
 
