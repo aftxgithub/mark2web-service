@@ -8,26 +8,15 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
-
-	"github.com/thealamu/mark2web-service/internal/pkg/db"
-	"github.com/thealamu/mark2web-service/internal/pkg/log"
-	"github.com/thealamu/mark2web-service/internal/pkg/mark2web"
 )
 
 func TestE2E(t *testing.T) {
-	service := &mark2web.Service{
-		DB: &db.FSDatabase{
-			BaseDir: os.TempDir(),
-		},
+	s, err := newServer(":8080")
+	if err != nil {
+		t.Fatal(err)
 	}
-	s := &m2wserver{
-		service: service,
-		logger:  log.New("DEBUG"),
-		Server:  httpServer(),
-	}
-	s.setupRoutes()
+
 	handler := s.Handler
 
 	// Submit markdown
