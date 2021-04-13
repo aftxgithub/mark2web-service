@@ -2,59 +2,60 @@ package web
 
 import (
 	"net"
-	"net/http"
 	"net/url"
+	"os"
 	"strings"
-	"time"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/thealamu/mark2web-service/internal/pkg/db"
-	m2wlog "github.com/thealamu/mark2web-service/internal/pkg/log"
-	"github.com/thealamu/mark2web-service/internal/pkg/mark2web"
 )
 
 func Start() int {
-	srv := &m2wserver{
-		logger: logger(),
-		Server: httpServer(),
-	}
-	srv.service = service(srv.logger)
-	srv.setupRoutes()
-
-	srv.logger.Infof("Serving on %s", srv.Addr)
-	if err := srv.ListenAndServe(); err != nil {
-		srv.logger.Errorf("could not start server: %v", err)
+	srv, err := newServer(getRunAddr(), logger)
+	if err != nil {
+		log.Error(err)
 		return 1
 	}
-
 	return 0
 }
 
-func service(l *log.Logger) *mark2web.Service {
-	var dbImpl db.DB
-	dbImpl, err := db.NewFirebaseDB(l)
+// logger offers a suitable logger for use in handlers
+func logger(s *server) error {
+	logLevel, err := log.ParseLevel(getLogLevelFromEnv())
 	if err != nil {
-		l.Error(err)
-		dbImpl = &db.FSDatabase{
-			BaseDir: ".",
-		}
+		logLevel = log.InfoLevel
 	}
-	return &mark2web.Service{DB: dbImpl}
+	s.logger = &log.Logger{
+		Out: os.Stderr,
+		Formatter: &log.TextFormatter{
+			DisableColors: true,
+			FullTimestamp: true,
+		},
+		Level: logLevel,
+	}
+	return nil
 }
 
-// logger returns a suitable logger for use in handlers
-func logger() *log.Logger {
-	return m2wlog.New(getLogLevelFromEnv())
-}
+// func service(l *log.Logger) *mark2web.Service {
+// 	var dbImpl db.DB
+// 	dbImpl, err := db.NewFirebaseDB(l)
+// 	if err != nil {
+// 		l.Error(err)
+// 		dbImpl = &db.FSDatabase{
+// 			// TODO(thealamu): Use suitable system directory to store local files
+// 			BaseDir: ".",
+// 		}
+// 	}
+// 	return &mark2web.Service{DB: dbImpl}
+// }
 
-// httpServer returns a simple, configured http server
-func httpServer() *http.Server {
-	return &http.Server{
-		Addr:         getRunAddr(),
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 5 * time.Second,
-	}
-}
+// // httpServer returns a simple, configured http server
+// func httpServer() *http.Server {
+// 	return &http.Server{
+// 		Addr:         getRunAddr(),
+// 		ReadTimeout:  5 * time.Second,
+// 		WriteTimeout: 5 * time.Second,
+// 	}
+// }
 
 // getRunAddr returns the address to start the server on.
 // If no port in environment, it defaults to 8080.
