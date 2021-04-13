@@ -4,14 +4,32 @@ import (
 	"bytes"
 	"crypto/sha1"
 	"fmt"
+	"os"
 
 	"github.com/gomarkdown/markdown"
+	"github.com/pkg/errors"
 	"github.com/thealamu/mark2web-service/internal/pkg/db"
 )
 
 // Service implements core logic for converting markdown to URL
 type Service struct {
 	DB db.DB
+}
+
+func NewService(opts ...func(*Service) error) (*Service, error) {
+	s := Service{}
+	// set sensible defaults
+	s.DB = &db.FSDatabase{
+		BaseDir: os.TempDir(),
+	}
+
+	for _, opt := range opts {
+		if err := opt(&s); err != nil {
+			return nil, errors.Wrap(err, "could not create service")
+		}
+	}
+
+	return &s, nil
 }
 
 // HTMLFor returns the corresponding HTML for the ID
