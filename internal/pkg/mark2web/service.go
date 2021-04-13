@@ -21,6 +21,7 @@ type Service struct {
 func NewService(opts ...func(*Service) error) (*Service, error) {
 	s := Service{}
 	// set sensible defaults
+	s.Logger = log.New()
 	s.DB = &db.FSDatabase{
 		BaseDir: os.TempDir(),
 	}

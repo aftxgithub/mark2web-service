@@ -7,10 +7,11 @@ import (
 	"strings"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/thealamu/mark2web-service/internal/pkg/mark2web"
 )
 
 func Start() int {
-	srv, err := newServer(getRunAddr(), logger)
+	srv, err := newServer(getRunAddr(), logger, service)
 	if err != nil {
 		log.Error(err)
 		return 1
@@ -19,6 +20,18 @@ func Start() int {
 		return 1
 	}
 	return 0
+}
+
+func service(s *server) error {
+	srvc, err := mark2web.NewService(func(srvc *mark2web.Service) error {
+		srvc.Logger = s.logger
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	s.service = srvc
+	return nil
 }
 
 // logger offers a suitable logger for use in handlers
