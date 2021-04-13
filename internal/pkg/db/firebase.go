@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	log "github.com/sirupsen/logrus"
+
 	"cloud.google.com/go/storage"
 	firebase "firebase.google.com/go/v4"
 )
@@ -11,9 +13,10 @@ import (
 // FirebaseDB is a Firebase implementation of the DB interface
 type FirebaseDB struct {
 	bucket *storage.BucketHandle
+	logger *log.Logger
 }
 
-func NewFirebaseDB() (*FirebaseDB, error) {
+func NewFirebaseDB(l *log.Logger) (*FirebaseDB, error) {
 	config := &firebase.Config{
 		StorageBucket: "mark2web.appspot.com",
 	}
@@ -29,7 +32,7 @@ func NewFirebaseDB() (*FirebaseDB, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &FirebaseDB{bucket}, nil
+	return &FirebaseDB{bucket, l}, nil
 }
 
 func (f *FirebaseDB) Save(ID string, HTML []byte) error {
