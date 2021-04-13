@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"io/ioutil"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -53,5 +54,21 @@ func (f *FirebaseDB) Save(ID string, HTML []byte) error {
 }
 
 func (f *FirebaseDB) GetHTMLFor(ID string) ([]byte, error) {
-	return nil, nil
+	f.logger.Tracef("Getting HTML for id '%s'", ID)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*50)
+	defer cancel()
+
+	wc, err := f.bucket.Object(ID).NewReader(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer wc.Close()
+
+	HTMLBytes, err := ioutil.ReadAll(wc)
+	if err != nil {
+		return nil, err
+	}
+
+	return HTMLBytes, nil
 }
