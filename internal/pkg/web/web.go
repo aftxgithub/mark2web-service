@@ -4,7 +4,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 	"time"
 
@@ -16,10 +15,10 @@ import (
 
 func Start() int {
 	srv := &m2wserver{
-		service(),
-		logger(),
-		httpServer(),
+		logger: logger(),
+		Server: httpServer(),
 	}
+	srv.service = service(srv.logger)
 	srv.setupRoutes()
 
 	srv.logger.Infof("Serving on %s", srv.Addr)
@@ -31,12 +30,16 @@ func Start() int {
 	return 0
 }
 
-func service() *mark2web.Service {
-	return &mark2web.Service{
-		DB: &db.FSDatabase{
-			BaseDir: os.TempDir(),
-		},
+func service(l *log.Logger) *mark2web.Service {
+	var dbImpl db.DB
+	dbImpl, err := db.NewFirebaseDB()
+	if err != nil {
+		l.Error(err)
+		dbImpl = &db.FSDatabase{
+			BaseDir: ".",
+		}
 	}
+	return &mark2web.Service{DB: dbImpl}
 }
 
 // logger returns a suitable logger for use in handlers
