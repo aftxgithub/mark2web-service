@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"io/ioutil"
 	"testing"
+
+	"github.com/gomarkdown/markdown/parser"
 )
 
 func TestShasumOf(t *testing.T) {
@@ -27,7 +29,10 @@ func TestMarkdownToHTML(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	gotHTML := markdownToHTML(testMarkdown)
+	extensions := parser.CommonExtensions
+	psr := parser.NewWithExtensions(extensions)
+
+	gotHTML := markdownToHTML(testMarkdown, psr)
 	if !bytes.Equal(testHTML, gotHTML) {
 		t.Fatalf("Rendered HTML does not match expected")
 	}
