@@ -1,6 +1,7 @@
 package web
 
 import (
+	"io/ioutil"
 	"net"
 	"net/url"
 	"os"
@@ -36,6 +37,13 @@ func service(s *server) error {
 
 	var database func(srvc *mark2web.Service) error
 	if hasEnv("GOOGLE_APPLICATION_CREDENTIALS") {
+		gacFilename := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+		log.Debug(gacFilename)
+		gacData, err := ioutil.ReadFile(gacFilename)
+		if err != nil {
+			log.Error(err)
+		}
+		log.Debug(string(gacData))
 		// Use firebase
 		database = func(srvc *mark2web.Service) error {
 			firebaseDB, err := db.NewFirebaseDB(srvc.Logger)
