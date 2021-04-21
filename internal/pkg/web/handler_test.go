@@ -43,7 +43,7 @@ func TestE2E(t *testing.T) {
 	// Get HTML
 	id := getLastPath(string(gotURL))
 
-	expectedHTMLBytes := []byte("<h1>Markdown Data</h1>")
+	expectedHTMLBytes := []byte(`<h1 id="markdown-data">Markdown Data</h1>`)
 	req = httptest.NewRequest(http.MethodGet, fmt.Sprintf("/%s", id), nil)
 	rr = httptest.NewRecorder()
 
