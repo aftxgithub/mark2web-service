@@ -17,15 +17,13 @@ import (
 type Service struct {
 	Logger *log.Logger
 	DB     db.DB
-	psr    *parser.Parser
 }
+
+var markdownExtensions = parser.CommonExtensions | parser.AutoHeadingIDs
 
 func NewService(opts ...func(*Service) error) (*Service, error) {
 	log.Traceln("creating a new service")
-	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
-	psr := parser.NewWithExtensions(extensions)
-
-	s := Service{psr: psr}
+	s := Service{}
 
 	// set sensible defaults
 	s.Logger = log.New()
@@ -51,7 +49,8 @@ func (s *Service) HTMLFor(ID string) ([]byte, error) {
 // MarkdownToURL generates a URL for the markdown,
 // creates a mapping of the URL to the markdown and returns the URL
 func (s *Service) MarkdownToURL(md []byte, host string) (string, error) {
-	HTMLEquiv := markdownToHTML(md, s.psr)
+	psr := parser.NewWithExtensions(markdownExtensions)
+	HTMLEquiv := markdownToHTML(md, psr)
 	path := shasumOf(HTMLEquiv)
 	// Create mapping
 	err := s.DB.Save(path, HTMLEquiv)
