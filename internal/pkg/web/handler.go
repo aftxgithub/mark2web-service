@@ -11,6 +11,12 @@ import (
 //go:embed static/scaffold.html
 var HTMLScaffoldTemplate string
 
+// HTMLScaffoldData defines data for the scaffold template
+type HTMLScaffoldData struct {
+	Title   string
+	Content string
+}
+
 func (s *server) handleRoot(w http.ResponseWriter, r *http.Request) {
 	s.logger.Tracef("handling root path request for method %s\n", r.Method)
 	if r.Method == http.MethodPost {
