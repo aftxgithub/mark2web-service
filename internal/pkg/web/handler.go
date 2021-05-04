@@ -2,6 +2,7 @@ package web
 
 import (
 	"bytes"
+	_ "embed"
 	"fmt"
 	tpl "html/template"
 	"io"
