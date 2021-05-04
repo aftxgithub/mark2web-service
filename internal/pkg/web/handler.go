@@ -4,10 +4,10 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	tpl "html/template"
 	"io"
 	"net/http"
 	"strings"
+	tpl "text/template"
 )
 
 //go:embed static/scaffold.html
