@@ -8,6 +8,7 @@ import (
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/thealamu/mark2web-service/internal/pkg/db"
@@ -51,9 +52,11 @@ func (s *Service) HTMLFor(ID string) ([]byte, error) {
 func (s *Service) MarkdownToURL(md []byte, host string) (string, error) {
 	psr := parser.NewWithExtensions(markdownExtensions)
 	HTMLEquiv := markdownToHTML(md, psr)
-	path := shasumOf(HTMLEquiv)
+	// Sanitize HTML
+	safeHTML := bluemonday.UGCPolicy().SanitizeBytes(HTMLEquiv)
+	path := shasumOf(safeHTML)
 	// Create mapping
-	err := s.DB.Save(path, HTMLEquiv)
+	err := s.DB.Save(path, safeHTML)
 	if err != nil {
 		return "", err
 	}
