@@ -8,6 +8,9 @@ import (
 	"strings"
 )
 
+//go:embed static/scaffold.html
+var HTMLScaffoldTemplate string
+
 func (s *server) handleRoot(w http.ResponseWriter, r *http.Request) {
 	s.logger.Tracef("handling root path request for method %s\n", r.Method)
 	if r.Method == http.MethodPost {
