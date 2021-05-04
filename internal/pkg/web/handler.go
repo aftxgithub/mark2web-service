@@ -3,6 +3,7 @@ package web
 import (
 	"bytes"
 	"fmt"
+	tpl "html/template"
 	"io"
 	"net/http"
 	"strings"
@@ -16,6 +17,9 @@ type HTMLScaffoldData struct {
 	Title   string
 	Content string
 }
+
+// Parse the HTML template for use in handlers
+var template = tpl.Must(tpl.New("scaffold.html").Parse(HTMLScaffoldTemplate))
 
 func (s *server) handleRoot(w http.ResponseWriter, r *http.Request) {
 	s.logger.Tracef("handling root path request for method %s\n", r.Method)
@@ -45,7 +49,12 @@ func (s *server) handleURLresolution(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, string(HTMLbytes))
+	err = template.Execute(w, &HTMLScaffoldData{id, string(HTMLbytes)})
+	if err != nil {
+		s.logger.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }
 
 // handleMarkdownUpload receives a markdown file and returns a URL to it as static HTML
