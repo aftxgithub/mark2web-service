@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	tmpl "text/template"
 )
 
 func TestE2E(t *testing.T) {
@@ -43,7 +44,15 @@ func TestE2E(t *testing.T) {
 	// Get HTML
 	id := getLastPath(string(gotURL))
 
-	expectedHTMLBytes := []byte(`<h1 id="markdown-data">Markdown Data</h1>`)
+	expectedHTML := `<h1 id="markdown-data">Markdown Data</h1>`
+
+	var buf bytes.Buffer
+	template := tmpl.Must(tmpl.New("scaffold.html").ParseFiles("./static/scaffold.html"))
+	err = template.Execute(&buf, HTMLScaffoldData{id, expectedHTML})
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	req = httptest.NewRequest(http.MethodGet, fmt.Sprintf("/%s", id), nil)
 	rr = httptest.NewRecorder()
 
@@ -58,6 +67,7 @@ func TestE2E(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	expectedHTMLBytes := buf.Bytes()
 	if !bytes.Equal(gotHTMLBytes, expectedHTMLBytes) {
 		t.Fatalf("expected HTML content to be '%s', got '%s'", expectedHTMLBytes, gotHTMLBytes)
 	}
