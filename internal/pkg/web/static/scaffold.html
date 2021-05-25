@@ -1,135 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>{{ .Title }}</title>
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap');
 
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: 'Lato', sans-serif;
-            }
+<head>
+    <title>{{ .Title }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap');
 
-            body {
-                padding: 4rem 6%;
-            }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lato', sans-serif;
+        }
 
-            h1 {
-                font-size: 3rem;
-                font-weight: 300;
-                color: #428CE2;
-            }
+        body {
+            padding: 4rem 6%;
+        }
 
-            h2 {
-                font-size: 2.5rem;
-                font-weight: 400;
-                color: #929292;
-            }
+        h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            color: #428CE2;
+        }
 
-            h3 {
-                font-size: 2.2rem;
-                font-weight: 300;
-                color: #428CE2;
-            }
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #929292;
+        }
 
-            h4 {
-                font-size: 2rem;
-                font-weight: 400;
-                color: #428CE2;
-            }
+        h3 {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #428CE2;
+        }
 
-            h5 {
-                font-size: 1.5rem;
-                font-weight: 300;
-                color: #428CE2;
-            }
+        h4 {
+            font-size: 2rem;
+            font-weight: 400;
+            color: #428CE2;
+        }
 
-            h6 {
-                font-size: 1.125rem;
-                font-weight: 300;
-                color: #428CE2;
-            }
+        h5 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #428CE2;
+        }
 
-            p {
-                font-weight: 300;
-                font-size: 1rem;
-                line-height: 1.375rem;
-                color: #929292;
-            }
+        h6 {
+            font-size: 1.125rem;
+            font-weight: 300;
+            color: #428CE2;
+        }
 
-            b {
-                font-weight: 700;
-            }
+        p {
+            font-weight: 300;
+            font-size: 1rem;
+            line-height: 1.375rem;
+            color: #929292;
+        }
 
-            i {
-                font-style: italic;
-            }
+        b {
+            font-weight: 700;
+        }
 
-            blockquote {
-                margin: 1.5em 10px;
-                padding: 0.5em 10px;
-                quotes: "\201C""\201D""\2018""\2019";
-                color: #428CE2;
-                font-size: 1rem;
-                font-weight: 300;
-            }
-            blockquote:before {
-                color: #428CE2;
-                content: open-quote;
-                font-size: 4em;
-                font-weight: 700;
-                line-height: 0.1em;
-                margin-right: 0.25em;
-                vertical-align: -0.4em;
-            }
+        i {
+            font-style: italic;
+        }
 
-            blockquote p {
-                display: inline;
-            }
+        blockquote {
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            quotes: "\201C""\201D""\2018""\2019";
+            color: #428CE2;
+            font-size: 1rem;
+            font-weight: 300;
+        }
 
-            ul {
-                list-style: none;
-            }
+        blockquote:before {
+            color: #428CE2;
+            content: open-quote;
+            font-size: 4em;
+            font-weight: 700;
+            line-height: 0.1em;
+            margin-right: 0.25em;
+            vertical-align: -0.4em;
+        }
 
-            ul li {
-                position: relative;
-                margin-left: 1.5rem;
-                color: #929292;
-                font-size: 0.9rem;
-                font-weight: 400;
-                line-height: 1.6;
-            }
+        blockquote p {
+            display: inline;
+        }
 
-            ul li::before {
-                position: absolute; 
-                top: 50%;
-                left: -1.5rem;
-                transform: translateY(-50%);
-                content: '';
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                background-color: #428CE2;
-                border: 2px solid #FFE7CB;
-            }
+        ul {
+            list-style: none;
+        }
 
-            ul li ul li::before {
-                background-color: #FFE7CB;
-                border: 2px solid #428CE2;
-            }
+        ul li {
+            position: relative;
+            margin-left: 1.5rem;
+            color: #929292;
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
 
-            input[type="checkbox"] {
-                background: red;
-                /* Blue */
+        ul li::before {
+            position: absolute;
+            top: 50%;
+            left: -1.5rem;
+            transform: translateY(-50%);
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #428CE2;
+            border: 2px solid #FFE7CB;
+        }
 
-                border: 2px solid #428CE2;
-                border-radius: 2px;
-            }
-        </style>
-	</head>
-	<body>
-        {{ .Content }}
-	</body>
+        ul li ul li::before {
+            background-color: #FFE7CB;
+            border: 2px solid #428CE2;
+        }
+
+        input[type="checkbox"] {
+            background: red;
+            /* Blue */
+
+            border: 2px solid #428CE2;
+            border-radius: 2px;
+        }
+
+        img {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    {{ .Content }}
+</body>
+
 </html>
