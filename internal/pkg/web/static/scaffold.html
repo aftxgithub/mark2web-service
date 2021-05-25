@@ -133,11 +133,17 @@
         img {
             border-radius: 8px;
         }
+
+        #container {
+            margin: 0 18%;
+        }
     </style>
 </head>
 
 <body>
-    {{ .Content }}
+    <div id="container">
+        {{ .Content }}
+    </div>
 </body>
 
 </html>
