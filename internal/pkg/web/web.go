@@ -1,30 +1,46 @@
 package web
 
 import (
+	"context"
 	"net"
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
+	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/thealamu/mark2web-service/internal/pkg/db"
 	"github.com/thealamu/mark2web-service/internal/pkg/mark2web"
 )
 
-func Start() int {
-	srv, err := newServer(getRunAddr(), logger, service)
+var srv *server
+
+func Start() error {
+	var err error
+
+	srv, err = newServer(getRunAddr(), logger, service)
 	if err != nil {
-		log.Error(err)
-		return 1
+		return err
 	}
 	log.Infof("starting server on %s\n", srv.Addr)
-	// TODO(thealamu): Implement graceful shutdown on interrupt
+
 	if err := srv.ListenAndServe(); err != nil {
-		log.Error(err)
-		return 1
+		return err
 	}
+	return nil
+}
+
+func Stop() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := srv.Shutdown(ctx); err != nil {
+		return errors.Wrap(err, "graceful shutdown failed")
+	}
+
 	log.Traceln("server stopped")
-	return 0
+	return nil
 }
 
 func service(s *server) error {
