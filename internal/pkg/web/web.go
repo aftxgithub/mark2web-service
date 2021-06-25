@@ -64,7 +64,7 @@ func service(s *server) error {
 	} else {
 		database = func(srvc *mark2web.Service) error {
 			srvc.DB = &db.FSDatabase{
-				BaseDir: ".",
+				BaseDir: getDBPathFromEnv(),
 			}
 			return nil
 		}

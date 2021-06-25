@@ -9,7 +9,20 @@ const (
 
 	// M2W_LOG_LEVEL variable determines the log level across the service
 	M2W_LOG_LEVEL = "M2W_LOG_LEVEL"
+
+	// M2W_DB_PATH variable determines the path for the filesystem database
+	M2W_DB_PATH = "M2W_DB_PATH"
 )
+
+// getDBPathFromEnv returns the M2W_DB_PATH environment variable.
+// It returns the current directory (".") if the variable is unset.
+func getDBPathFromEnv() string {
+	dbPath, ok := os.LookupEnv(M2W_DB_PATH)
+	if !ok {
+		dbPath = "."
+	}
+	return dbPath
+}
 
 // getPortFromEnv returns the M2W_PORT environment variable.
 // For compatibility with some platforms (e.g. Heroku), it falls back to PORT if M2W_PORT is empty.
