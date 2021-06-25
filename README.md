@@ -84,3 +84,7 @@ Set TRACE log level:
 ```shell
 $ M2W_LOG_LEVEL=trace ./mark2web-service
 ```
+
+## Thanks
+- [@Meghatronics](https://github.com/Meghatronics): Responsible for the visual aesthetics.
+- [@EmmanuelOluwafemi](https://github.com/EmmanuelOluwafemi): Initial work on the stylesheet.
