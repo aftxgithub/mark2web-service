@@ -30,3 +30,54 @@ $ git clone https://github.com/thealamu/mark2web-service
 $ cd mark2web-service
 $ go build ./cmd/mark2web-service
 ```
+
+## Usage
+Start the service with sensible defaults:
+```shell
+$ ./mark2web-service
+TRAC[0000] creating a new server for addr :8080         
+.
+.
+.
+INFO[0000] starting server on :8080 
+```
+
+Request a webpage for a test markdown file:
+```shell
+$ curl localhost:8080 -F "file=@test.md"
+localhost:8080/f005ed3e144fc4de6adbd90292e77d557e88ce73
+```
+Visit the link in your browser to see the rendered webpage.
+
+### Config
+Start the service with optional environment configurations:
+    
+- M2W_PORT: Specify the port the server runs on
+- M2W_LOG_LEVEL: Choose preferred log level. See [Logrus log levels](https://pkg.go.dev/github.com/sirupsen/logrus#readme-level-logging)
+
+#### Data store
+The service offers two storage options: ```Filesystem``` or ```Firebase```. Configure using one of these env vars:
+- M2W_DB_PATH: Path to store the filesystem database
+- GOOGLE_APPLICATION_CREDENTIALS: Path to firebase service account json
+
+If GOOGLE_APPLICATION_CREDENTIALS is set in the environment, it takes precedence over the filesystem.
+
+Start the service on a custom port:
+```shell
+$ M2W_PORT=9000 ./mark2web-service
+TRAC[0000] creating a new server for addr :9000         
+.
+.
+.
+INFO[0000] starting server on :9000
+```
+
+Change filesystem database directory:
+```shell
+$ M2W_DB_PATH=/home/var/www ./mark2web-service
+```
+
+Set TRACE log level:
+```shell
+$ M2W_LOG_LEVEL=trace ./mark2web-service
+```
