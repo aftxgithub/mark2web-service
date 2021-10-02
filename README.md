@@ -14,11 +14,11 @@ $ docker pull vague369/mark2web-service:latest
 ```
 Start an interactive container, exposing port 9090:
 ```shell
-$ docker run --it -p9090:9090 vague369/mark2web-service
+$ docker run -it -p9090:9090 vague369/mark2web-service
 ```
 Or expose the service on a custom port using the M2W_PORT environment variable:
 ```shell
-$ docker run --it -p8000:8000 -e M2W_PORT=8000 vague369/mark2web-service
+$ docker run -it -p8000:8000 -e M2W_PORT=8000 vague369/mark2web-service
 ```
 
 ### Run a release
